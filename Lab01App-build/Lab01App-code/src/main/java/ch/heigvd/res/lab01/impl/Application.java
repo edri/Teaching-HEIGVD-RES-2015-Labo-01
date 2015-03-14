@@ -3,22 +3,20 @@ package ch.heigvd.res.lab01.impl;
 import ch.heigvd.res.lab01.impl.explorers.DFSFileExplorer;
 import ch.heigvd.res.lab01.impl.transformers.CompleteFileTransformer;
 import ch.heigvd.res.lab01.impl.transformers.FileTransformer;
+import ch.heigvd.res.lab01.impl.transformers.NoOpFileTransformer;
 import ch.heigvd.res.lab01.interfaces.IApplication;
 import ch.heigvd.res.lab01.interfaces.IFileExplorer;
 import ch.heigvd.res.lab01.interfaces.IFileVisitor;
 import ch.heigvd.res.lab01.quotes.QuoteClient;
 import ch.heigvd.res.lab01.quotes.Quote;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -110,7 +108,7 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void clearOutputDirectory() throws IOException {
-    FileUtils.deleteDirectory(new File(WORKSPACE_DIRECTORY));    
+    //FileUtils.deleteDirectory(new File(WORKSPACE_DIRECTORY));    
   }
 
   /**
@@ -137,16 +135,15 @@ public class Application implements IApplication {
             pathName += "/" + s;
          
          // Create the folders if they do not exist yet.
-         System.out.println("TEST : " + pathName);
          File path = new File(pathName);
          path.mkdirs();
          
-         // Create the quote's file.
+         // Create the quote's file and store  the text in it.         
          File quoteFile = new File(pathName + "/" + filename);
-         quoteFile.createNewFile();
-         
-         // Store quote's text in the new file.
-         
+         OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream(quoteFile), "UTF-8" );
+         writer.write(quote.getQuote());
+         writer.flush();
+         writer.close();
      }
      catch (IOException ex)
      {
@@ -185,9 +182,6 @@ public class Application implements IApplication {
   
   @Override
   public String getAuthorEmail() {
-     /*System.out.println("Please enter your mail address : ");     
-     Scanner s = new Scanner(System.in);
-     return s.next();*/
      return "miguel.santamaria@heig-vd.ch";
   }
 

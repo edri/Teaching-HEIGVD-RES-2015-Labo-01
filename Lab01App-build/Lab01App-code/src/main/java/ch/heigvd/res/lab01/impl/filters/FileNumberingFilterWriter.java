@@ -19,6 +19,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
   private int noLine = 0;
+  private boolean rDetected = false;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -37,7 +38,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
            s.insert(i + 1, ++noLine + "\t");
         else if (s.charAt(i) == '\r')
         {
-           if (s.charAt(i + 1) == '\n')
+           if (i < s.length() && s.charAt(i + 1) == '\n')
               ++i;
            
            s.insert(i + 1, ++noLine + "\t");
@@ -56,9 +57,15 @@ public class FileNumberingFilterWriter extends FilterWriter {
     if (noLine == 0)
        out.write(++noLine + "\t");
     
+    if (rDetected && c != '\n')
+       out.write(++noLine + "\t");
+    rDetected = false;
+           
     out.write(c);
 
-    if (c == '\n')
+    if (c == '\r')
+       rDetected = true;
+    else if (c == '\n')
        out.write(++noLine + "\t");
   }
 

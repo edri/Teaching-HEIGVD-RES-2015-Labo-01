@@ -49,8 +49,9 @@ public abstract class FileTransformer implements IFileVisitor {
       return;
     }
     try {
+      int c;
       Reader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
-      Writer writer = new OutputStreamWriter(new FileOutputStream(file.getPath()+ ".out"));
+      Writer writer = new OutputStreamWriter(new FileOutputStream(file.getPath()+ ".out"), "UTF-8");
       writer = decorateWithFilters(writer);
 
       /*
@@ -58,6 +59,8 @@ public abstract class FileTransformer implements IFileVisitor {
        * writer has been decorated by the concrete subclass!). You need to write a loop to read the
        * characters and write them to the writer.
        */
+      while ((c = reader.read()) != -1)
+         writer.write(c);
       
       reader.close();
       writer.flush();
