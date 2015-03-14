@@ -1,9 +1,12 @@
+/*
+* Miguel Santamaria
+* 14.03.2015
+*/
+
 package ch.heigvd.res.lab01.impl;
 
 import ch.heigvd.res.lab01.impl.explorers.DFSFileExplorer;
 import ch.heigvd.res.lab01.impl.transformers.CompleteFileTransformer;
-import ch.heigvd.res.lab01.impl.transformers.FileTransformer;
-import ch.heigvd.res.lab01.impl.transformers.NoOpFileTransformer;
 import ch.heigvd.res.lab01.interfaces.IApplication;
 import ch.heigvd.res.lab01.interfaces.IFileExplorer;
 import ch.heigvd.res.lab01.interfaces.IFileVisitor;
